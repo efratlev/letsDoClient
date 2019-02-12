@@ -1,0 +1,21 @@
+h2{
+  font-size: 200px;
+}
+.appBar{
+  /*background-color: dimgray;*/
+}
+
+.wrapp1{
+  border: coral solid 1px;
+  width: 203px;
+  height: 300px;
+  margin: auto;
+}
+.root{
+  width:100%;
+  max-Width:360;
+  /* backgroundColor: theme.palette.background.paper, */
+}
+.nested{
+  padding-Left:4;
+}

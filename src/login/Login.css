@@ -1,0 +1,28 @@
+.main{
+    width: 20%;
+    display:block; 
+    margin: auto;  
+   
+    
+  }
+  h1{
+      text-align: center;
+  }
+  .paper{
+    margin-Top:80px;
+    flex-Direction: 'column';
+    align-Items: 'center';
+   padding: 20px;
+  }
+  .avatar {
+    background-color: #ef27d6;
+     margin: auto;
+  }
+ .form {
+    width: 100%;
+    margin-Top: 10px;
+  } 
+  .submit {
+    margin-Top: 30px;
+    width: 30%;
+  }

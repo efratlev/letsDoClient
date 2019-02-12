@@ -1,0 +1,10 @@
+h2{
+  font-size: 200px;
+}
+
+.ShowTask{
+  border:darkmagenta,solid,2px;
+  width: 203px;
+  height: 300px;
+  margin: auto;
+}
