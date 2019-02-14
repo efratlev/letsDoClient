@@ -64,7 +64,7 @@ class SignUp extends Component {
 
   handleSubmit(event){
     let loginDetails = {};
-    loginDetails.username = this.state.username;
+    loginDetails.userName = this.state.username;
     loginDetails.email = this.state.email;
     loginDetails.password = this.state.password;
     if(service.signUp(loginDetails))

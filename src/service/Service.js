@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Service.css';
+import ServiceLocator from './ServiceLocator';
+
 /* 
 var nodemailer = require('nodemailer');
 
@@ -26,20 +28,22 @@ transporter.sendMail(mailOptions, function(error, info){
   }
 }); */
 
+const serviceLocator = new ServiceLocator();
+
 class Service extends Component {
   constructor(props) {
-    super(props);   
+    super(props);
     this.state = {
       list: [
-        { name: 'task133 ', _id: "11", desc: "desc of task1", priority: '1' , "status":0},
-        { name: 'task2', _id: "22", desc: "desc of task2", priority: '2' , "status":0},
-        { name: 'task3', _id: "33", desc: "desc of task3", priority: '1' , "status":0}
+        { name: 'task133 ', _id: "11", desc: "desc of task1", priority: '1', "status": 0 },
+        { name: 'task2', _id: "22", desc: "desc of task2", priority: '2', "status": 0 },
+        { name: 'task3', _id: "33", desc: "desc of task3", priority: '1', "status": 0 }
 
       ]
     };
   }
 
-  
+
   //oninit react
   setList(l1) {
     this.setState = ({
@@ -52,7 +56,7 @@ class Service extends Component {
     }
     return JSON.parse(localStorage.getItem('tasksList'));
   }
-  
+
   getUserListByGroup() {
     debugger
     if (localStorage.getItem('users') === null) {
@@ -60,111 +64,95 @@ class Service extends Component {
     }
     return JSON.parse(localStorage.getItem('users'));
   }
-  getUserById(id)
-  {
-    let users=JSON.parse(localStorage.getItem('users')); 
-    for(let i=0;i<users.length;i++)
-    {
-      if(users[i].id==id)
-      {
+  getUserById(id) {
+    let users = JSON.parse(localStorage.getItem('users'));
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].id == id) {
         return users[i];
       }
     }
-   alert("user not found- error");
+    alert("user not found- error");
   }
 
-  signIn(obj)
-  {
-    if(localStorage.getItem('users')==null)
-    {
+  signIn(obj) {
+    if (localStorage.getItem('users') == null) {
       alert("any user exist");
       return;
-    }  
-    let users=JSON.parse(localStorage.getItem('users')); 
-   // let user={username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
-    for(let i=0;i<users.length;i++)
-    {
-      if(users[i].password==obj.password)
-      {
-        if(users[i].username==obj.username||users[i].email==obj.username)
-        alert("this is the user!!!");
+    }
+    let users = JSON.parse(localStorage.getItem('users'));
+    // let user={username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].password == obj.password) {
+        if (users[i].username == obj.username || users[i].email == obj.username)
+          alert("this is the user!!!");
         return true;
       }
     }
-    alert("not exist:(");  
+    alert("not exist:(");
     return false;
   }
 
-  
-  createGroup(obj)
-  {
-    let groups=[];
-    if(localStorage.getItem('groups')!=null)
-    {
-      groups=JSON.parse(localStorage.getItem('groups'));
+
+  createGroup(obj) {
+    let groups = [];
+    if (localStorage.getItem('groups') != null) {
+      groups = JSON.parse(localStorage.getItem('groups'));
     }
-    let newGroup={objId:obj.password, groupname:obj.groupname, password:obj.password, description:obj.description};
+    let newGroup = { objId: obj.password, groupname: obj.groupname, password: obj.password, description: obj.description };
     debugger
     groups.push(newGroup);
 
     localStorage.setItem('groups', JSON.stringify(groups));
-    alert("check details&/n enter to all groups");  
+    alert("check details&/n enter to all groups");
   }
 
-  retrieveTasksGroup(groupId)
-  {
+  retrieveTasksGroup(groupId) {
     //rerturn all tasks for specific group
     debugger
   }
 
-  isPasswordValid(password)
-  {
-    if(password.length<5)
-    {
+  isPasswordValid(password) {
+    if (password.length < 5) {
       return false;
     }
     return true;
 
   }
-  signUp(obj)
-  {
-    if(!this.isPasswordValid(obj.password))
-    {
-      alert("invalid password");
-      return false;
-    }
-    let users=[];
-    if(localStorage.getItem('users')!=null)
-    {
-      users=JSON.parse(localStorage.getItem('users'));
-    }   
-    let newUser={username:obj.username, email:obj.email, password:obj.password,id:obj.password};
-    users.push(newUser);
+  signUp(obj) {
+    // if(!this.isPasswordValid(obj.password))
+    // {
+    //   alert("invalid password");
+    //   return false;
+    // }
+    // let users=[];
+    // if(localStorage.getItem('users')!=null)
+    // {
+    //   users=JSON.parse(localStorage.getItem('users'));
+    // }   
+     let newUser={userName:obj.userName, email:obj.email, password:obj.password,id:obj.password};
+    // users.push(newUser);
 
-    localStorage.setItem('users', JSON.stringify(users));
-    alert("check details&/n enter to all groups");  
-    return true;
+    // localStorage.setItem('users', JSON.stringify(users));
+    // alert("check details&/n enter to all groups");  
+    // return true;
+
+    debugger
+    serviceLocator.executeCommand('users/createNewUser', 'post', obj, function () { console.log('new user !!!!!!!!!!!') },
+      function () { console.log('failed to create new user :( ???????????????????') });
   }
 
-  returnGroups()
-  {
-    
-    if(localStorage.getItem('groups')==null)
-    {
-      alert("any group exist");
-      return;
-    }  
-    let groups=JSON.parse(localStorage.getItem('groups')); 
-   // let user=this.getUserById(1);//{username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
-  //  let myGroup=[];
-  //  for(let i=0;i<groups.length;i++)
-   // {
-   //   if (groups[i].pass==user.pass&&groups[i].username==user.username) {
-   //       myGroup.push(groups[i]);
-   //    }
-   // }
-  //  return myGroup;
-  return groups;
+  returnGroups() {
+
+    // if (localStorage.getItem('groups') == null) {
+    //   alert("any group exist");
+    //   return;
+    // }
+    // let groups = JSON.parse(localStorage.getItem('groups'));
+    debugger
+    serviceLocator.executeCommand('users/usersGroups/', 'get', {id:"5c4f6c38d6f0ad1a80f14b6e"}, function () { console.log('new user !!!!!!!!!!!') },
+      function () { console.log('failed to create new user :( ???????????????????') });
+
+    //return groups;
   }
   insertItem(obj) {
     this.setState({
@@ -185,8 +173,7 @@ class Service extends Component {
     return (arr);
   }
 
-  deleteTask(task)
-  {
+  deleteTask(task) {
     //delete it if u have autho--
   }
 
