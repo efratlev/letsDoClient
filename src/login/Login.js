@@ -26,12 +26,13 @@ class Login extends Component {
   }
 
   handleSubmit(event){
+    debugger
     let loginDetails = {};
     loginDetails.username = this.state.username;
     loginDetails.password = this.state.password;
-    if(service.signIn(loginDetails))
+    service.signIn(loginDetails, this);
     {
-      this.props.history.push('../MyGroups');
+     // this.props.history.push('../MyGroups');
     }  
   }
 
@@ -50,7 +51,7 @@ class Login extends Component {
         <Typography  component="h1" variant="h5">
           Sign in
         </Typography>
-        <form  onSubmit={this.handleSubmit.bind(this)} className='form'>
+        <form className='form'>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="email">Email Address (or username)</InputLabel>
             <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange('username')}/>
@@ -64,7 +65,8 @@ class Login extends Component {
             label="Remember me"
           />
           <Button
-            type="submit"
+           onClick={this.handleSubmit.bind(this)}
+            
             fullWidth
             variant="contained"
             color="primary"

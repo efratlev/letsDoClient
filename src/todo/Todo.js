@@ -11,8 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Task from '../task/Task';
-import NewTask from '../newTask/NewTask'
-import NewTask1 from '../newTask/NewTask'
+import NewTask from '../task/NewTask'
+import NewTask1 from '../task/NewTask'
 import About from '../About';
 import Service from '../service/Service';
 import EditTask from '../editTask/EditTask';

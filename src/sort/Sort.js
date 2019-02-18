@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
-import NewTask from '../newTask/NewTask'
+import NewTask from '../task/NewTask'
 import About from '../About';
 import Service from '../service/Service';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";

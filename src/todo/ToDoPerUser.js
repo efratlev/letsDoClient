@@ -7,6 +7,9 @@ import Collapse from '@material-ui/core/Collapse';
 import Member from '../login/Member';
 import Todo from './Todo';
 import Service from '../service/Service';
+import { debug } from 'util';
+
+const axios = require('axios');
 
 const service = new Service();
 
@@ -15,8 +18,23 @@ class ToDoPerUser extends Component {
   constructor(props) {
     super(props);    
     this.state = {
-     collapse:{}
+     collapse:{},
+     members:[]
     };
+    //this.componentDidMount=this.componentDidMount.bind(this);
+    //this.axios
+  }
+
+  setStatePls(res)
+  {
+    debugger
+    this.setState({ groups: res.data })
+  }
+
+  componentDidMount()
+  {
+    debugger
+    service.getUserListByGroup(this); 
   }
   
   collapseTasks(id) {
@@ -26,30 +44,32 @@ class ToDoPerUser extends Component {
     this.setState({ collapse: arr });
   };
 
-  renderTask(contact) {
+  renderTask(member) {
     return(
       <div>
-    <ListItem button  onClick={() => this.collapseTasks(contact.id)}>
-      <Member username={contact.username} id={contact.id}></Member>      
+    <ListItem button  onClick={() => this.collapseTasks(member._id)}>
+      <Member username={member.firstName+' '+member.lastName} id={member._id}></Member>      
      </ListItem>
-      <Collapse in={this.state.collapse[contact.id]} timeout="auto" unmountOnExit style={{paddingLeft: '70px'}}>
+      <Collapse in={this.state.collapse[member._id]} timeout="auto" unmountOnExit style={{paddingLeft: '70px'}}>
       <Todo></Todo>
     </Collapse>
     </div>
       )
   }
 
-  render() {
-    return (
+  render() {  
+    debugger;  
+      return this.state.members!=null&&this.state.members.length
+      ?(    
       <List
         component="nav"
         subheader={<ListSubheader component="div">Group List Items</ListSubheader>}
         className="root">
-        {service.getUserListByGroup().map(contact => 
-           this.renderTask(contact))
+        {this.state.members.map(member => 
+           this.renderTask(member))
         }
       </List>
-    );
+    ):null
   }  
 }
 

@@ -42,6 +42,11 @@ class MemberList extends Component {
 
   addNewUser()
   {
+    debugger
+    let mailOptions={};
+    mailOptions.to=this.state.email;
+    mailOptions.from='<here the name of the manager>'
+    service.sendEmail(mailOptions);
     //send email to this group
    // when he will approve it he will be added
    this.setState({ open: true, email:'' });

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Service.css';
 import ServiceLocator from './ServiceLocator';
-
 /* 
 var nodemailer = require('nodemailer');
 
@@ -27,7 +26,6 @@ transporter.sendMail(mailOptions, function(error, info){
     console.log('Email sent: ' + info.response);
   }
 }); */
-
 const serviceLocator = new ServiceLocator();
 
 class Service extends Component {
@@ -57,12 +55,13 @@ class Service extends Component {
     return JSON.parse(localStorage.getItem('tasksList'));
   }
 
-  getUserListByGroup() {
+  getUserListByGroup(self) {
     debugger
-    if (localStorage.getItem('users') === null) {
-      return
-    }
-    return JSON.parse(localStorage.getItem('users'));
+    serviceLocator.executeGet('groups/getUsersInGroup','get',{_id:localStorage.getItem('currentGroup')},
+      function (data) { 
+        self.setState({members:data});
+        console.log('users for group !!!!!!!!!!!');},
+      function () { console.log('users for group failed :( ???????????????????');});
   }
   getUserById(id) {
     let users = JSON.parse(localStorage.getItem('users'));
@@ -74,22 +73,30 @@ class Service extends Component {
     alert("user not found- error");
   }
 
-  signIn(obj) {
-    if (localStorage.getItem('users') == null) {
+  signIn(obj, self) {
+    debugger
+    serviceLocator.executePost('login','post',obj,function () { console.log('new user !!!!!!!!!!!'); self.props.history.push('../MyGroups'); },
+    function () { console.log('failed to create new user :( ???????????????????');})
+    
+    /* if(localStorage.getItem('users')==null)
+    {
       alert("any user exist");
       return;
-    }
-    let users = JSON.parse(localStorage.getItem('users'));
-    // let user={username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].password == obj.password) {
-        if (users[i].username == obj.username || users[i].email == obj.username)
-          alert("this is the user!!!");
+    }  
+    let users=JSON.parse(localStorage.getItem('users')); 
+   // let user={username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
+    for(let i=0;i<users.length;i++)
+    {
+      if(users[i].password==obj.password)
+      {
+        if(users[i].username==obj.username||users[i].email==obj.username)
+        alert("this is the user!!!");
         return true;
       }
     }
-    alert("not exist:(");
-    return false;
+    alert("not exist:(");  
+    return false; */
+   
   }
 
 
@@ -119,41 +126,34 @@ class Service extends Component {
 
   }
   signUp(obj) {
-    // if(!this.isPasswordValid(obj.password))
-    // {
-    //   alert("invalid password");
-    //   return false;
-    // }
-    // let users=[];
-    // if(localStorage.getItem('users')!=null)
-    // {
-    //   users=JSON.parse(localStorage.getItem('users'));
-    // }   
-     let newUser={userName:obj.userName, email:obj.email, password:obj.password,id:obj.password};
-    // users.push(newUser);
+    /* if (!this.isPasswordValid(obj.password)) {
+      alert("invalid password");
+      return false;
+    }
+    let users = [];
+    if (localStorage.getItem('users') != null) {
+      users = JSON.parse(localStorage.getItem('users'));
+    }
+    let newUser = { username: obj.username, email: obj.email, password: obj.password, id: obj.password };
+    users.push(newUser);
 
-    // localStorage.setItem('users', JSON.stringify(users));
-    // alert("check details&/n enter to all groups");  
-    // return true;
-
+  
+    alert("check details&/n enter to all groups");
+     */
     debugger
-    serviceLocator.executeCommand('users/createNewUser', 'post', obj, function () { console.log('new user !!!!!!!!!!!') },
-      function () { console.log('failed to create new user :( ???????????????????') });
+    serviceLocator.executeCommand('users/createNewUser', 'post', obj, function () { console.log('new user !!!!!!!!!!!');  },
+      function () { console.log('failed to create new user :( ???????????????????');});
+     return true;
   }
 
-  returnGroups() {
-
-    // if (localStorage.getItem('groups') == null) {
-    //   alert("any group exist");
-    //   return;
-    // }
-    // let groups = JSON.parse(localStorage.getItem('groups'));
-    debugger
-    serviceLocator.executeCommand('users/usersGroups/', 'get', {id:"5c4f6c38d6f0ad1a80f14b6e"}, function () { console.log('new user !!!!!!!!!!!') },
-      function () { console.log('failed to create new user :( ???????????????????') });
-
-    //return groups;
+  returnGroups(self) {
+    serviceLocator.executeGet('users/userGroups','get',{id:'5c5c535287015b4088619caf'},
+    function (data) { 
+      self.setState({groups:data.groups});
+      console.log('users for group !!!!!!!!!!!');},
+    function () { console.log('users for group failed :( ???????????????????');});
   }
+
   insertItem(obj) {
     this.setState({
       list: this.state.list.push(obj),
@@ -191,6 +191,12 @@ class Service extends Component {
     this.setList(v1);
     v1.push(obj);
     localStorage.setItem('tasksList', JSON.stringify(v1));
+  }
+
+  sendEmail(mailOptions)
+  {
+    serviceLocator.sendMail('sendEmail','post', mailOptions ,function () { console.log('send mail !!!!!!!!!!!');  },
+    function () { console.log('failed to send email :( ???????????????????');});
   }
 
   render() {

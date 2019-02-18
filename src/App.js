@@ -6,7 +6,7 @@ import Home from './Home';
 import About from './About';
 import Menu from './menu/MenuBar';
 import Todo from './todo/Todo';
-import NewTask from './newTask/NewTask';
+import NewTask from './task/NewTask';
 import EditTask from './editTask/EditTask';
 import ViewTask from './task/ViewTask';
 import NewGroup from './login/NewGroup';
@@ -65,14 +65,14 @@ class App extends Component {
         </main>
       </Router>
         {/* Footer */}
-        <footer className="footer">
+        {/* <footer className="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Something here to give the footer a purpose!
         </Typography>
-      </footer>
+      </footer> */}
       {/* End footer */}
      </div> 
     );

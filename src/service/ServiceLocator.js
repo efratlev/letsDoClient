@@ -9,31 +9,34 @@ class ServiceLocator extends Component {
     //baseUrl = 'http://4000/';
     //baseUrl = 'https://family.heroku.com/';
 
+   executeGet(url, method, body, callback, callbackerr) {
+        debugger
+        axios({ url: 'https://lets-do-server.herokuapp.com/' + url, method: method, params: body }).then(function (response) {
+            callback(response.data); 
+        }).catch(function (error) {
+            callbackerr(error);
+            console.log(error);
+        });
+    } 
+
     executePost(url, method, body, callback, callbackerr) {
         debugger
-        axios({ url: 'http://localhost:4000/' + url, method: method, data: body }).then(function (response) {
-            //callback(response);
+        axios({ url: 'https://lets-do-server.herokuapp.com/' + url, method: method, data: body }).then(function (response) {
             callback(response.data); 
-            console.log(response);
         }).catch(function (error) {
             callbackerr(error);
             console.log(error);
         });
     }
 
-    executeCommand(url, method, body, callback, callbackerr) {
+    sendMail(url, method, body, callback, callbackerr) {
         debugger
-        axios({ url: 'http://localhost:4000/' + url, method: method, params: body }).then(function (response) {
-            //callback(response);
+        axios({ url: 'https://lets-do-server.herokuapp.com/' + url, method: method, data: body }).then(function (response) {
             callback(response.data); 
-            console.log(response);
         }).catch(function (error) {
             callbackerr(error);
             console.log(error);
         });
     }
-
-    
-
 }
 export default ServiceLocator;

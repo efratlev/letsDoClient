@@ -17,18 +17,37 @@ class MyGroups extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {isToggleOn: true};
+    this.state = {
+      isToggleOn: true,
+      groups:[]
+    };
   } 
+
+  async componentDidMount() {
+    debugger
+    service.returnGroups(this); 
+  }
   
-  selectGroup = prop => event => {
-   let Tasks= service.retrieveTasksGroup([prop]);
+  selectGroup(groupId) {   
+    localStorage.setItem('currentGroup', groupId);
+    debugger
+   //let Tasks= service.retrieveTasksGroup([prop]);
    //sort the tasks by user ans present them on screen
-   this.props.history.push('../ToDoList');
+    let path = './ToDoList';
+    this.props.history.push({
+      pathname: path,
+      state: groupId
+    })  
   };
 
-  retrieveGroupMembers()
+  retrieveGroupMembers(groupId)
   {
-     this.props.history.push('/MemberList');
+    localStorage.setItem('currentGroup', groupId);
+    let path = './MemberList';
+    this.props.history.push({
+      pathname: path,
+      state: groupId
+    })  
   }
 
   createNewGroup()
@@ -37,13 +56,16 @@ class MyGroups extends Component {
   }
 
   render() {
-    return (      
+    debugger
+    return this.state.groups!=null&&this.state.groups.length
+      ?(        
       <div className="App-header">              
       <h3>My Groups</h3>
       <div className={classNames("layout", "cardGrid")}>
         <Grid container spacing={40}>
-          {service.returnGroups().map(group => (
-          <Grid item key={group.objId} sm={6} md={4} lg={3} className="cardWrap">
+     
+          {this.state.groups.map(group => (
+          <Grid item key={group._id} sm={6} md={4} lg={3} className="cardWrap">
             <Card className="card">
               <CardMedia
                 className="cardMedia"
@@ -51,20 +73,20 @@ class MyGroups extends Component {
                 title="Image title"/>
                 <CardContent className={"cardContent"}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {group.groupname}
+                    {group.groupName}
                   </Typography>
                   <Typography>
                     {group.description}
                   </Typography>
                 </CardContent>
               <CardActions>
-              <Button size="small" color="primary" onClick={this.selectGroup(group.objId)}> 
+              <Button size="small" color="primary" onClick={()=>this.selectGroup(group._id)}> 
                 Select
               </Button>
               <Button size="small" color="primary">
                 Edit
               </Button>
-              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group.objId)}>
+              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group._id)}>
                 Members
               </Button>
               </CardActions>
@@ -83,7 +105,7 @@ class MyGroups extends Component {
           </Grid>
         </div>
     </div>       
-    );
+    ): null;
   }
 }
 
