@@ -36,8 +36,15 @@ class MemberList extends Component {
     super(props)
     this.state = {
       open: false,
-      email:''     
+      email:'',
+      members:[]    
     }
+  }
+
+  componentDidMount()
+  {
+    debugger
+    service.getUserListByGroup(this); 
   }
 
   addNewUser()
@@ -63,17 +70,18 @@ class MemberList extends Component {
     this.setState({ open: false });
   }
 
-  renderMember(contact) {
+  renderMember(member) {
+    debugger
     return(
       <div>
     <ListItem button >
-      <Member username={contact.username} id={contact.id}></Member> 
+      <Member username={member.userName} id={member._id}></Member> 
       <TextField style={{ width: '200px'}}
           id="filled-select-authoration-native"
           select
           label="authoration"
           className="textField"
-          value={contact.authoration}
+          value={member.authoration}
           onChange={this.handleChange('authoration')}
           SelectProps={{
             native: true,
@@ -95,14 +103,15 @@ class MemberList extends Component {
   }
   
   render (){
-      return(
+    return this.state.members!=null&&this.state.members.length
+    ?(
         <div>
          <List
           component="nav"
           subheader={<ListSubheader component="div">The members in my group</ListSubheader>}
           className="root">
-          {service.getUserListByGroup().map(contact => 
-            this.renderMember(contact))
+            {this.state.members.map(member => 
+              this.renderMember(member))
           }
           <ListItem button>
           <ListItem alignItems="flex-start" >            
@@ -145,7 +154,7 @@ class MemberList extends Component {
           ]}
         />
      </div>
-    );
+    ):null;
   }
 }
 

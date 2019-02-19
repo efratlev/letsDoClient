@@ -31,9 +31,9 @@ class SignUp extends Component {
     loginDetails.userName = this.state.username;
     loginDetails.email = this.state.email;
     loginDetails.password = this.state.password;
-    if(service.signUp(loginDetails))
+    service.signUp(loginDetails, this);
     {
-      this.props.history.push('../NewGroup');
+  //    this.props.history.push('../NewGroup');
     }      
   }
 
@@ -52,7 +52,7 @@ class SignUp extends Component {
         <Typography  component="h1" variant="h5">
           Sign up
         </Typography>
-        <form  onSubmit={this.handleSubmit.bind(this)} className='form'>
+        <form className='form'>
          <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="username">Name</InputLabel>
             <Input id="username" name="username" autoComplete="username" autoFocus onChange={this.handleChange('username')}/>
@@ -70,7 +70,7 @@ class SignUp extends Component {
             label="Remember me"
           />
           <Button
-            type="submit"
+            onClick={this.handleSubmit.bind(this)} 
             fullWidth
             variant="contained"
             color="primary"

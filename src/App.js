@@ -18,7 +18,7 @@ import Album from './todo/Album';
 import ToDoPerUser from './todo/ToDoPerUser';
 import Login from './login/Login';
 import ResetPassword from './login/ResetPassword';
-import Typography from '@material-ui/core/Typography';
+import Profile from './login/test/Profile';
 import Sort from './sort/Sort';
 import Member from './login/Member';
 import ToDoList from './todo/ToDoList';
@@ -62,6 +62,7 @@ class App extends Component {
           <Route path="/Member" component={Member} />
           <Route path="/ToDoPerUser" component={ToDoPerUser} />
           <Route path="/ToDoList" component={ToDoList} />
+          <Route path="/Profile" component={Profile} />
         </main>
       </Router>
         {/* Footer */}

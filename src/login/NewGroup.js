@@ -29,11 +29,13 @@ class NewGroup extends Component {
 
   handleSubmit(event){
     let groupDetails = {};
-    groupDetails.groupname = this.state.groupname;
+    groupDetails.groupName = this.state.groupname;
     groupDetails.password = this.state.password;
     groupDetails.description = this.state.description;
-    service.createGroup(groupDetails); 
-    this.props.history.push('/MyGroups');
+    let inputs={};
+    inputs.group=groupDetails;
+    inputs.userId=localStorage.getItem('userId');
+    service.createGroup(inputs, this); 
   }
 
   handleChange = prop => event => {
@@ -51,7 +53,7 @@ class NewGroup extends Component {
         <Typography  component="h1" variant="h5">
          New Group
         </Typography>
-          <form onSubmit={this.handleSubmit.bind(this)} className='form'>
+          <form  className='form'>
             <FormControl margin="normal" required fullWidth >
               <Input type='text' name='groupname' placeholder='group name' onChange={this.handleChange('groupname')}/>
             </FormControl> 
@@ -64,12 +66,12 @@ class NewGroup extends Component {
             <CssBaseline />
             <br/>   
             <Button  style={{marginTop: '10px'}}
-            type="submit"
+            onClick={this.handleSubmit.bind(this)}
             fullWidth
             variant="contained"
             color="primary"
             className='submit'>
-           Create
+           Create 
           </Button>      
           </form>
           <br/>

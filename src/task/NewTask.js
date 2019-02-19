@@ -63,7 +63,8 @@ class NewTask extends Component {
       name: '',
       description: '',
       _id:'',
-      priority:''
+      priority:'',
+      assignedTo:'5c6c53b9cd2522001760837f'//temp- we need to do calculate of user id by user name
     }
   }
 
@@ -75,18 +76,19 @@ class NewTask extends Component {
  
   handleSubmit(event) {
   let obj = {};
-  obj.name = this.state.name;
+  obj.taskName = this.state.name;
   obj.description = this.state.description;
-  obj.id = this.state.priority;
+  obj.userId=localStorage.getItem('userId');
+  obj.assignedId = this.state.assignedTo;
   obj.priority = this.state.priority;
   obj.status= 0;
-   this.setState({obj:service.insertItem(obj) });
-   this.props.history.push('/ToDoList')
+  service.createNewTask(obj, this);
+   //this.props.history.push('/ToDoList')
   }
 
   render() {
     return (
-      <form className="container"  autoComplete="off" onSubmit={this.handleSubmit.bind(this)}>
+      <form className="container"  autoComplete="off" >
         <TextField
           required
           id="filled-name"
@@ -188,7 +190,7 @@ class NewTask extends Component {
           ))}
         </TextField>
       <br/>
-       <Button type="submit" variant="contained" color="primary" >
+       <Button onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
        create
      </Button>
       </form>

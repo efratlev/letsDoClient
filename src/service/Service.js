@@ -57,11 +57,12 @@ class Service extends Component {
 
   getUserListByGroup(self) {
     debugger
-    serviceLocator.executeGet('groups/getUsersInGroup','get',{_id:localStorage.getItem('currentGroup')},
-      function (data) { 
-        self.setState({members:data});
-        console.log('users for group !!!!!!!!!!!');},
-      function () { console.log('users for group failed :( ???????????????????');});
+    serviceLocator.executeGet('groups/getUsersInGroup', 'get', { _id: localStorage.getItem('currentGroup') },
+      function (data) {
+        self.setState({ members: data });
+        console.log('users for group !!!!!!!!!!!');
+      },
+      function () { console.log('users for group failed :( ???????????????????'); });
   }
   getUserById(id) {
     let users = JSON.parse(localStorage.getItem('users'));
@@ -75,9 +76,9 @@ class Service extends Component {
 
   signIn(obj, self) {
     debugger
-    serviceLocator.executePost('login','post',obj,function () { console.log('new user !!!!!!!!!!!'); self.props.history.push('../MyGroups'); },
-    function () { console.log('failed to create new user :( ???????????????????');})
-    
+    serviceLocator.executePost('login', 'post', obj, function () { console.log('new user !!!!!!!!!!!'); self.props.history.push('../MyGroups'); },
+      function () { console.log('failed to create new user :( ???????????????????'); })
+
     /* if(localStorage.getItem('users')==null)
     {
       alert("any user exist");
@@ -96,21 +97,18 @@ class Service extends Component {
     }
     alert("not exist:(");  
     return false; */
-   
+
   }
 
 
-  createGroup(obj) {
-    let groups = [];
-    if (localStorage.getItem('groups') != null) {
-      groups = JSON.parse(localStorage.getItem('groups'));
-    }
-    let newGroup = { objId: obj.password, groupname: obj.groupname, password: obj.password, description: obj.description };
+  createGroup(obj, self) {
     debugger
-    groups.push(newGroup);
-
-    localStorage.setItem('groups', JSON.stringify(groups));
-    alert("check details&/n enter to all groups");
+    serviceLocator.executePost('groups/newGroup', 'post', obj,
+      function () {
+        console.log('new group !!!!!!!!!!!');
+        self.props.history.push('../MyGroups');
+      },
+      function () { console.log('failed to create new group :( ???????????????????'); });
   }
 
   retrieveTasksGroup(groupId) {
@@ -125,7 +123,7 @@ class Service extends Component {
     return true;
 
   }
-  signUp(obj) {
+  signUp(obj, self) {
     /* if (!this.isPasswordValid(obj.password)) {
       alert("invalid password");
       return false;
@@ -141,25 +139,39 @@ class Service extends Component {
     alert("check details&/n enter to all groups");
      */
     debugger
-    serviceLocator.executeCommand('users/createNewUser', 'post', obj, function () { console.log('new user !!!!!!!!!!!');  },
-      function () { console.log('failed to create new user :( ???????????????????');});
-     return true;
+    serviceLocator.executePost('users/createNewUser', 'post', obj,
+      function (data) {
+        console.log('new user !!!!!!!!!!!');
+        self.props.history.push('../NewGroup');
+        localStorage.setItem('userId', data._id);
+      },
+      function () { console.log('failed to create new user :( ???????????????????'); });
+   
   }
 
   returnGroups(self) {
-    serviceLocator.executeGet('users/userGroups','get',{id:'5c5c535287015b4088619caf'},
-    function (data) { 
-      self.setState({groups:data.groups});
-      console.log('users for group !!!!!!!!!!!');},
-    function () { console.log('users for group failed :( ???????????????????');});
+    serviceLocator.executeGet('users/userGroups', 'get', { id: localStorage.getItem('userId') },
+      function (data) {
+        self.setState({ groups: data.groups });
+        console.log('users for group !!!!!!!!!!!');
+      },
+      function () { console.log('users for group failed :( ???????????????????'); });
   }
 
-  insertItem(obj) {
+  createNewTask(task, self) {
+
+    serviceLocator.executePost('tasks/newTask','post',task,
+    function (data) {
+      self.props.history.goBack();
+      console.log('users for group !!!!!!!!!!!');
+    },
+    function () { console.log('users for group failed :( ???????????????????'); });/* 
+    
     this.setState({
       list: this.state.list.push(obj),
     });
     localStorage.setItem('tasksList', JSON.stringify(this.state.list));
-    return this.state.list;
+    return this.state.list; */
   }
 
   markTaskAsDone(id) {
@@ -193,10 +205,9 @@ class Service extends Component {
     localStorage.setItem('tasksList', JSON.stringify(v1));
   }
 
-  sendEmail(mailOptions)
-  {
-    serviceLocator.sendMail('sendEmail','post', mailOptions ,function () { console.log('send mail !!!!!!!!!!!');  },
-    function () { console.log('failed to send email :( ???????????????????');});
+  sendEmail(mailOptions) {
+    serviceLocator.sendMail('sendEmail', 'post', mailOptions, function () { console.log('send mail !!!!!!!!!!!'); },
+      function () { console.log('failed to send email :( ???????????????????'); });
   }
 
   render() {
