@@ -30,9 +30,18 @@ class Todo extends Component {
     };
   }
  
-  componentWillMount() {
-    this.setState({ arr: service.getList() });
+  componentDidMount() {
+   // this.props.history.listen(this.onRouteChange.bind(this));
+    this.setState({ taskArr: service.getTaskListByUser(this.props.userId) });
+    
   } 
+  
+  /* onRouteChange(route) {
+    if(this.state.dirtyInd)
+    {
+      
+    }
+  } */
 
   renderTask(task) {    
     return (
@@ -43,13 +52,14 @@ class Todo extends Component {
   }
 
   render() {
-    return (
+    return this.state.taskArr!=null&&this.state.taskArr.length
+    ?(   
       <List >
-        {this.state.arr.map(item =>
+        {this.state.taskArr.map(item =>
           this.renderTask(item))
         }
       </List >     
-      );
+      ):'Loading...';
     }
   }
 

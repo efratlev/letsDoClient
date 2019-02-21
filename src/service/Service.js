@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Service.css';
 import ServiceLocator from './ServiceLocator';
+import Task from '../task/Task';
 /* 
 var nodemailer = require('nodemailer');
 
@@ -48,22 +49,33 @@ class Service extends Component {
       list: l1,
     });
   }
-  getList() {
-    if (localStorage.getItem('tasksList') === null) {
-      localStorage.setItem('tasksList', JSON.stringify(this.state.list));
+
+  getTaskListByUser(userId) {
+    debugger
+    if (userId == null)
+      userId = localStorage.getItem('userId');
+    let tasks = JSON.parse(localStorage.getItem('groupTasks'));
+    let userTasks = [];
+    tasks.map(task => {
+      if (task.assignedTo == userId) {
+        userTasks.push(task);
+      }
     }
-    return JSON.parse(localStorage.getItem('tasksList'));
+    )
+    debugger
+    return userTasks;
   }
 
   getUserListByGroup(self) {
     debugger
-    serviceLocator.executeGet('groups/getUsersInGroup', 'get', { _id: localStorage.getItem('currentGroup') },
+    serviceLocator.executePost('groups/getUsersInGroup', 'post', { _id: localStorage.getItem('currentGroup') },
       function (data) {
         self.setState({ members: data });
         console.log('users for group !!!!!!!!!!!');
       },
       function () { console.log('users for group failed :( ???????????????????'); });
   }
+
   getUserById(id) {
     let users = JSON.parse(localStorage.getItem('users'));
     for (let i = 0; i < users.length; i++) {
@@ -76,28 +88,13 @@ class Service extends Component {
 
   signIn(obj, self) {
     debugger
-    serviceLocator.executePost('login', 'post', obj, function () { console.log('new user !!!!!!!!!!!'); self.props.history.push('../MyGroups'); },
-      function () { console.log('failed to create new user :( ???????????????????'); })
-
-    /* if(localStorage.getItem('users')==null)
-    {
-      alert("any user exist");
-      return;
-    }  
-    let users=JSON.parse(localStorage.getItem('users')); 
-   // let user={username:localStorage.getItem('username'), pass:localStorage.getItem('password')};
-    for(let i=0;i<users.length;i++)
-    {
-      if(users[i].password==obj.password)
-      {
-        if(users[i].username==obj.username||users[i].email==obj.username)
-        alert("this is the user!!!");
-        return true;
-      }
-    }
-    alert("not exist:(");  
-    return false; */
-
+    serviceLocator.executePost('login', 'post', obj,
+      function (data) {
+        localStorage.setItem('userId', data._id);
+        console.log('login !!!!!!!!!!!');
+        self.props.history.push('../MyGroups');
+      },
+      function () { console.log('login failed :('); })
   }
 
 
@@ -111,9 +108,15 @@ class Service extends Component {
       function () { console.log('failed to create new group :( ???????????????????'); });
   }
 
-  retrieveTasksGroup(groupId) {
-    //rerturn all tasks for specific group
+  retrieveTasksByGroup(self) {
     debugger
+    serviceLocator.executePost('tasks/getAllGroupsTasks', 'post', { groupId: localStorage.getItem('currentGroup') },
+      function (data) {
+        localStorage.setItem('groupTasks', JSON.stringify(data.tasks));
+        self.setState({ loadingDataInd: true });
+        console.log('tasks for group !!!!!!!!!!!');
+      },
+      function () { console.log('taskss for group failed :( ???????????????????'); });
   }
 
   isPasswordValid(password) {
@@ -124,20 +127,6 @@ class Service extends Component {
 
   }
   signUp(obj, self) {
-    /* if (!this.isPasswordValid(obj.password)) {
-      alert("invalid password");
-      return false;
-    }
-    let users = [];
-    if (localStorage.getItem('users') != null) {
-      users = JSON.parse(localStorage.getItem('users'));
-    }
-    let newUser = { username: obj.username, email: obj.email, password: obj.password, id: obj.password };
-    users.push(newUser);
-
-  
-    alert("check details&/n enter to all groups");
-     */
     debugger
     serviceLocator.executePost('users/createNewUser', 'post', obj,
       function (data) {
@@ -146,7 +135,7 @@ class Service extends Component {
         localStorage.setItem('userId', data._id);
       },
       function () { console.log('failed to create new user :( ???????????????????'); });
-   
+
   }
 
   returnGroups(self) {
@@ -159,19 +148,13 @@ class Service extends Component {
   }
 
   createNewTask(task, self) {
-
-    serviceLocator.executePost('tasks/newTask','post',task,
-    function (data) {
-      self.props.history.goBack();
-      console.log('users for group !!!!!!!!!!!');
-    },
-    function () { console.log('users for group failed :( ???????????????????'); });/* 
-    
-    this.setState({
-      list: this.state.list.push(obj),
-    });
-    localStorage.setItem('tasksList', JSON.stringify(this.state.list));
-    return this.state.list; */
+    task.groupId = localStorage.getItem('currentGroup');
+    serviceLocator.executePost('tasks/newTask', 'post', task,
+      function (data) {
+        self.props.history.goBack();
+        console.log('users for group !!!!!!!!!!!');
+      },
+      function () { console.log('users for group failed :( ???????????????????'); });
   }
 
   markTaskAsDone(id) {
@@ -185,24 +168,30 @@ class Service extends Component {
     return (arr);
   }
 
-  deleteTask(task) {
-    //delete it if u have autho--
+  deleteTask(taskId, self) {
+    serviceLocator.executePost('tasks/deleteTask', 'delete', {_id:taskId},
+      function (data) {
+        self.props.history.goBack();
+        console.log('deleteTask !!!!!!!!!!!');
+      },
+      function () { console.log('delete Task failed :('); });
   }
 
-  getIdFromLocalStorage(id) {
-    this.state.list.map(item => {
-      if (item._id === id) {
-        localStorage.setItem('objFromLocalStorage', JSON.stringify(item));
-      }
-    })
-  }
+  /*   getIdFromLocalStorage(id) {
+      this.state.list.map(item => {
+        if (item._id === id) {
+          localStorage.setItem('objFromLocalStorage', JSON.stringify(item));
+        }
+      })
+    } */
 
-  update(obj) {
-    let v1 = {};
-    v1 = this.markTaskAsDone(obj._id);
-    this.setList(v1);
-    v1.push(obj);
-    localStorage.setItem('tasksList', JSON.stringify(v1));
+  updateTask(task, self) {
+    serviceLocator.executePost('tasks/updateTask', 'put', task,
+      function (data) {
+        self.props.history.goBack();
+        console.log('update task !!!!!!');
+      },
+      function () { console.log('update task failed :('); });
   }
 
   sendEmail(mailOptions) {

@@ -51,7 +51,7 @@ class ToDoPerUser extends Component {
       <Member username={member.userName} id={member._id}></Member>      
      </ListItem>
       <Collapse in={this.state.collapse[member._id]} timeout="auto" unmountOnExit style={{paddingLeft: '70px'}}>
-      <Todo></Todo>
+      <Todo userId={member._id}></Todo>
     </Collapse>
     </div>
       )

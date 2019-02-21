@@ -41,6 +41,7 @@ class Status extends React.Component
     
     handleStatus()
     {
+      debugger
       let statusNum=this.state.status+1;
       if(statusNum>=statusDetailes.length)
         statusNum=0;     

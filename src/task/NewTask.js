@@ -3,6 +3,9 @@ import './NewTask.css';
 import Service from "../service/Service"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+//import DateFnsUtils from '@date-io/date-fns';
+//import Grid from '@material-ui/core/Grid';
 
 const service = new Service();
 
@@ -62,33 +65,32 @@ class NewTask extends Component {
     this.state = {
       name: '',
       description: '',
-      _id:'',
-      priority:'',
-      assignedTo:'5c6c53b9cd2522001760837f'//temp- we need to do calculate of user id by user name
+      _id: '',
+      priority: '',
+      assignedTo: '5c6c53b9cd2522001760837f'//temp- we need to do calculate of user id by user name
     }
   }
 
   handleChange = prop => event => {
     let obj = {};
-    obj[prop]=event.target.value;
-    this.setState(obj);   
+    obj[prop] = event.target.value;
+    this.setState(obj);
   }
- 
+
   handleSubmit(event) {
-  let obj = {};
-  obj.taskName = this.state.name;
-  obj.description = this.state.description;
-  obj.userId=localStorage.getItem('userId');
-  obj.assignedId = this.state.assignedTo;
-  obj.priority = this.state.priority;
-  obj.status= 0;
-  service.createNewTask(obj, this);
-   //this.props.history.push('/ToDoList')
+    let obj = {};
+    obj.taskName = this.state.name;
+    obj.description = this.state.description;
+    obj.userId = localStorage.getItem('userId');
+    obj.assignedId = localStorage.getItem('userId');//this.state.assignedTo;- need to change temporary value
+    obj.priority = this.state.priority;
+    obj.status = 0;
+    service.createNewTask(obj, this);
   }
 
   render() {
     return (
-      <form className="container"  autoComplete="off" >
+      <form className="container" autoComplete="off" >
         <TextField
           required
           id="filled-name"
@@ -99,17 +101,27 @@ class NewTask extends Component {
           margin="normal"
           variant="filled"
         />
-         <TextField
+        <TextField
           id="filled-full-width"
           label="Description"
           value={this.state.description}
           helperText="Full width!"
           fullWidth
           margin="normal"
-          variant="filled" 
+          variant="filled"
           onChange={this.handleChange('description')}
-         
         />
+        <TextField
+          id="date"
+          label="Birthday"
+          type="date"
+          defaultValue="2017-05-24"
+          className="textField"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+         
         <TextField
           id="filled-number"
           label="Number"
@@ -166,7 +178,7 @@ class NewTask extends Component {
             </option>
           ))}
         </TextField>
-         <TextField
+        <TextField
           id="filled-select-currency-native"
           select
           label="priority"
@@ -189,9 +201,9 @@ class NewTask extends Component {
             </option>
           ))}
         </TextField>
-      <br/>
-       <Button onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
-       create
+        <br />
+        <Button onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
+          create
      </Button>
       </form>
     );

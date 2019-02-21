@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Task.css';
-import {withRouter} from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +8,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Service from '../service/Service';
 import Status from '../components/Status';
 
-const service = new Service();
+//const service = new Service();
 
 class Task extends Component {
   state = {
@@ -25,7 +24,7 @@ class Task extends Component {
   }
 
   deleteTask(task) {
-    service.deleteTask(task);
+    //service.deleteTask(task.id, this);
   }
 
   saveStatus(task)
@@ -37,7 +36,7 @@ class Task extends Component {
     return (
       <div className="App-header">
         <ListItem dense button>       
-          <ListItemText primary={this.props.value.name} secondary={this.props.value.description}/>
+          <ListItemText primary={this.props.value.taskName} secondary={this.props.value.description}/>
           <IconButton aria-label="Delete" onClick={()=>this.deleteTask(this.props.value)} >
             <DeleteIcon/>
           </IconButton>
@@ -50,4 +49,4 @@ class Task extends Component {
       );
     }
   }
-export default withRouter(Task);
+  export default Task;

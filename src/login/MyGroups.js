@@ -65,7 +65,7 @@ class MyGroups extends Component {
         <Grid container spacing={40}>
      
           {this.state.groups.map(group => (
-          <Grid item key={group._id} sm={6} md={4} lg={3} className="cardWrap">
+          <Grid item key={group.groupId._id} sm={6} md={4} lg={3} className="cardWrap">
             <Card className="card">
               <CardMedia
                 className="cardMedia"
@@ -73,20 +73,20 @@ class MyGroups extends Component {
                 title="Image title"/>
                 <CardContent className={"cardContent"}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {group.groupName}
+                    {group.groupId.groupName}
                   </Typography>
                   <Typography>
-                    {group.description}
+                    {group.groupId.description}
                   </Typography>
                 </CardContent>
               <CardActions>
-              <Button size="small" color="primary" onClick={()=>this.selectGroup(group._id)}> 
+              <Button size="small" color="primary" onClick={()=>this.selectGroup(group.groupId._id)}> 
                 Select
               </Button>
               <Button size="small" color="primary">
                 Edit
               </Button>
-              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group._id)}>
+              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group.groupId._id)}>
                 Members
               </Button>
               </CardActions>

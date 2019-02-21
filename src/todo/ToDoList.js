@@ -55,9 +55,17 @@ class ToDoList extends Component {
     super(props);
     this.state = {
       value: 0,
-      filterValue: ''
+      filterValue: '',
+      loadingDataInd:false
     };
   }
+
+  componentDidMount()
+  {
+    debugger
+    service.retrieveTasksByGroup(this); 
+  }
+
 
   createNewTask() {
     let path = '../NewTask';
@@ -152,9 +160,9 @@ class ToDoList extends Component {
   };
 
   render() {
-
     const { value } = this.state;
-    return (
+    return this.state.loadingDataInd==true
+    ?(   
       <div className="root">
         <AppBar position="static" color="default" className="appBar">
           <Tabs value={value} className="appBar" onChange={this.toggleTab.bind(this)} >
@@ -190,7 +198,7 @@ class ToDoList extends Component {
           new
       </Button>
       </div>
-    );
+    ):'loading...';
   }
 }
 

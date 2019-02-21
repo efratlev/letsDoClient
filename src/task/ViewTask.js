@@ -62,7 +62,7 @@ class ViewTask extends Component {
     this.backToList = this.backToList.bind(this);
     this.state = {
       id: '',
-      name: '',
+      taskName: '',
       description: '',
       priority: '',
       status:''
@@ -70,7 +70,7 @@ class ViewTask extends Component {
   }
 
   componentWillMount() {
-    this.setState({ name: this.props.location.state.name });
+    this.setState({ taskName: this.props.location.state.taskName });
     this.setState({ description: this.props.location.state.description });
     this.setState({ priority: this.props.location.state.priority });
     this.setState({ id: this.props.location.state._id , status:this.props.location.state.status});
@@ -90,13 +90,12 @@ class ViewTask extends Component {
   saveChanges() {
     debugger
     let obj = {};
-    obj._id = this.state.priority;
-    obj.name = this.state.name;
+    obj._id = this.state.id;
+    obj.taskName = this.state.taskName;
     obj.description = this.state.description;
     obj.priority = this.state.priority;
     obj.status=this.state.status;
-    service.update(obj);
-    this.props.history.goBack();
+    service.updateTask(obj, this);    
   }
 
   render() {
@@ -107,8 +106,8 @@ class ViewTask extends Component {
           id="filled-name"
           label="Name"
           className="textField"
-          value={this.state.name}
-          onChange={this.handleChange('name')}
+          value={this.state.taskName}
+          onChange={this.handleChange('taskName')}
           margin="normal"
           variant="filled"
         />

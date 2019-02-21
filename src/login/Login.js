@@ -31,9 +31,6 @@ class Login extends Component {
     loginDetails.username = this.state.username;
     loginDetails.password = this.state.password;
     service.signIn(loginDetails, this);
-    {
-     // this.props.history.push('../MyGroups');
-    }  
   }
 
   handleChange = prop => event => {
