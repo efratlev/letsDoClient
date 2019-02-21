@@ -41,7 +41,7 @@ class Task extends Component {
             <DeleteIcon/>
           </IconButton>
           <IconButton aria-label="Delete" onClick={()=>this.editTask(this.props.value)}>
-          <EditIcon/>    
+          <EditIcon/>      
       </IconButton>
       <Status status={this.props.value.status}></Status>
     </ListItem>

@@ -37,7 +37,8 @@ class MemberList extends Component {
     this.state = {
       open: false,
       email:'',
-      members:[]    
+      members:[],
+      txtSnackBar:''    
     }
   }
 
@@ -52,11 +53,10 @@ class MemberList extends Component {
     debugger
     let mailOptions={};
     mailOptions.to=this.state.email;
-    mailOptions.from='<here the name of the manager>'
-    service.sendEmail(mailOptions);
-    //send email to this group
-   // when he will approve it he will be added
-   this.setState({ open: true, email:'' });
+    mailOptions.from=localStorage.getItem('userName');
+    mailOptions.groupName=localStorage.getItem('groupName');
+    service.sendEmail(mailOptions, this);  
+    this.setState({ email:''})
   }  
   
   handleChange = prop => event => {
@@ -141,7 +141,7 @@ class MemberList extends Component {
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Email sent</span>}
+          message={<span id="message-id">{this.state.txtSnackBar}</span>}
           action={[
             <IconButton
               key="close"

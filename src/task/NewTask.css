@@ -10,9 +10,9 @@ h2{
   padding: 5px;
 }
 
-.container{
+/* .container{
   margin: 8px;
-}
+} */
 
 .textField{
   border-color: brown;
@@ -25,4 +25,17 @@ h2{
 
 .menu{
   width: 200px;
+}
+.paper{
+  /* padding: theme.spacing.unit, */
+  text-Align: 'center';
+ /*  color: theme.palette.text.secondary, */
+   white-Space: 'nowrap';
+  margin-Bottom:1;
+}
+.container {
+  display: 'grid';
+  grid-Template-Columns: 'repeat(12, 1fr)';
+  padding: '200px'
+  /* grid-Gap: `${theme.spacing.unit * 3}px`, */
 }

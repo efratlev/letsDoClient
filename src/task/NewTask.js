@@ -4,6 +4,9 @@ import Service from "../service/Service"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 //import DateFnsUtils from '@date-io/date-fns';
 //import Grid from '@material-ui/core/Grid';
 
@@ -90,6 +93,27 @@ class NewTask extends Component {
 
   render() {
     return (
+      <div>
+      <Grid className="container" container spacing={24}>
+      <Grid item xs={3}>
+        <Paper className="paper">xs=3</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className="paper">xs=3</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className="paper">xs=3</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className="paper">xs=3</Paper>
+      </Grid>
+      <Grid item xs={8}>
+        <Paper className="paper">xs=8</Paper>
+      </Grid>
+      <Grid item xs={4}>
+        <Paper className="paper">xs=4</Paper>
+      </Grid>
+    </Grid>
       <form className="container" autoComplete="off" >
         <TextField
           required
@@ -205,7 +229,7 @@ class NewTask extends Component {
         <Button onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
           create
      </Button>
-      </form>
+      </form></div>
     );
   }
 }

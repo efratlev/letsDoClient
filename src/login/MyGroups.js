@@ -28,25 +28,27 @@ class MyGroups extends Component {
     service.returnGroups(this); 
   }
   
-  selectGroup(groupId) {   
-    localStorage.setItem('currentGroup', groupId);
+  selectGroup(group) {   
+    localStorage.setItem('currentGroup', group._id);
+    localStorage.setItem('groupName', group.groupName);
     debugger
    //let Tasks= service.retrieveTasksGroup([prop]);
    //sort the tasks by user ans present them on screen
     let path = './ToDoList';
     this.props.history.push({
       pathname: path,
-      state: groupId
+      state: group._id
     })  
   };
 
-  retrieveGroupMembers(groupId)
+  retrieveGroupMembers(group)
   {
-    localStorage.setItem('currentGroup', groupId);
+    localStorage.setItem('currentGroup', group._id);
+    localStorage.setItem('groupName', group.groupName);
     let path = './MemberList';
     this.props.history.push({
       pathname: path,
-      state: groupId
+      state: group._id
     })  
   }
 
@@ -80,13 +82,13 @@ class MyGroups extends Component {
                   </Typography>
                 </CardContent>
               <CardActions>
-              <Button size="small" color="primary" onClick={()=>this.selectGroup(group.groupId._id)}> 
+              <Button size="small" color="primary" onClick={()=>this.selectGroup(group.groupId)}> 
                 Select
               </Button>
               <Button size="small" color="primary">
                 Edit
               </Button>
-              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group.groupId._id)}>
+              <Button size="small" color="primary" onClick={()=>this.retrieveGroupMembers(group.groupId)}>
                 Members
               </Button>
               </CardActions>

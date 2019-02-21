@@ -91,6 +91,7 @@ class Service extends Component {
     serviceLocator.executePost('login', 'post', obj,
       function (data) {
         localStorage.setItem('userId', data._id);
+        localStorage.setItem('userName', data.userName);
         console.log('login !!!!!!!!!!!');
         self.props.history.push('../MyGroups');
       },
@@ -132,7 +133,8 @@ class Service extends Component {
       function (data) {
         console.log('new user !!!!!!!!!!!');
         self.props.history.push('../NewGroup');
-        localStorage.setItem('userId', data._id);
+        localStorage.setItem('userId', data._id); 
+        localStorage.setItem('userName', data.userName);
       },
       function () { console.log('failed to create new user :( ???????????????????'); });
 
@@ -169,7 +171,7 @@ class Service extends Component {
   }
 
   deleteTask(taskId, self) {
-    serviceLocator.executePost('tasks/deleteTask', 'delete', {_id:taskId},
+    serviceLocator.executePost('tasks/deleteTask', 'delete', { _id: taskId },
       function (data) {
         self.props.history.goBack();
         console.log('deleteTask !!!!!!!!!!!');
@@ -194,9 +196,16 @@ class Service extends Component {
       function () { console.log('update task failed :('); });
   }
 
-  sendEmail(mailOptions) {
-    serviceLocator.sendMail('sendEmail', 'post', mailOptions, function () { console.log('send mail !!!!!!!!!!!'); },
-      function () { console.log('failed to send email :( ???????????????????'); });
+  sendEmail(mailOptions, self) {
+    serviceLocator.sendMail('sendEmail', 'post', mailOptions,
+      function () {
+        self.setState({ open: true, txtSnackBar: 'Email sent' });
+        console.log('send mail !!!!!!!!!!!');
+      },
+      function () {
+        self.setState({ open: true, txtSnackBar: "Email can't send" });
+        console.log('failed to send email :( ???????????????????');
+      });
   }
 
   render() {
