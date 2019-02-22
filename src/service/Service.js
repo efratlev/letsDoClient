@@ -1,32 +1,7 @@
 import React, { Component } from 'react';
-import './Service.css';
 import ServiceLocator from './ServiceLocator';
 import Task from '../task/Task';
-/* 
-var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'youremail@gmail.com',
-    pass: 'yourpassword'
-  }
-});
-
-var mailOptions = {
-  from: 'youremail@gmail.com',
-  to: 'myfriend@yahoo.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-}); */
 const serviceLocator = new ServiceLocator();
 
 class Service extends Component {
@@ -41,7 +16,6 @@ class Service extends Component {
       ]
     };
   }
-
 
   //oninit react
   setList(l1) {
@@ -109,15 +83,23 @@ class Service extends Component {
       function () { console.log('failed to create new group :( ???????????????????'); });
   }
 
-  retrieveTasksByGroup(self) {
+  retrieveTasksByGroupBasic(callback) {
     debugger
     serviceLocator.executePost('tasks/getAllGroupsTasks', 'post', { groupId: localStorage.getItem('currentGroup') },
       function (data) {
         localStorage.setItem('groupTasks', JSON.stringify(data.tasks));
-        self.setState({ loadingDataInd: true });
+        callback(data);
         console.log('tasks for group !!!!!!!!!!!');
       },
       function () { console.log('taskss for group failed :( ???????????????????'); });
+  }
+
+  retrieveTasksByGroup(self) {
+    this.retrieveTasksByGroupBasic(
+      function (data) {
+        self.setState({ loadingDataInd: true });
+      });
+
   }
 
   isPasswordValid(password) {
@@ -133,7 +115,7 @@ class Service extends Component {
       function (data) {
         console.log('new user !!!!!!!!!!!');
         self.props.history.push('../NewGroup');
-        localStorage.setItem('userId', data._id); 
+        localStorage.setItem('userId', data._id);
         localStorage.setItem('userName', data.userName);
       },
       function () { console.log('failed to create new user :( ???????????????????'); });
@@ -171,9 +153,14 @@ class Service extends Component {
   }
 
   deleteTask(taskId, self) {
+    let self2 = this;
     serviceLocator.executePost('tasks/deleteTask', 'delete', { _id: taskId },
       function (data) {
-        self.props.history.goBack();
+        debugger
+        self2.retrieveTasksByGroupBasic(
+          function (data) {
+            self.componentDidMount();
+          });
         console.log('deleteTask !!!!!!!!!!!');
       },
       function () { console.log('delete Task failed :('); });
@@ -191,6 +178,21 @@ class Service extends Component {
     serviceLocator.executePost('tasks/updateTask', 'put', task,
       function (data) {
         self.props.history.goBack();
+        console.log('update task !!!!!!');
+      },
+      function () { console.log('update task failed :('); });
+  }
+
+  updateStatus(task, self) {
+    debugger
+    let self2=this;
+    serviceLocator.executePost('tasks/updateTask', 'put', task,
+      function (data) {
+        self2.retrieveTasksByGroupBasic(
+          function (data) {
+            self.componentDidMount();
+          });
+       // self.setState({ status:  self.statusNum, statusColor: self.statusDetailes[ self.statusNum].color, tooltip:  self.statusDetailes[ self.statusNum].tooltip });
         console.log('update task !!!!!!');
       },
       function () { console.log('update task failed :('); });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Todo.css';
+import {  withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -19,7 +20,20 @@ import EditTask from '../editTask/EditTask';
 import ViewTask from '../task/ViewTask';
 import Sort from '../sort/Sort';
 import ToDoList from './ToDoList';
+
+
+import { Prompt } from 'react-router'
 const service = new Service();
+const MyComponent = () => (
+  <React.Fragment>
+    <Prompt
+      when={true}
+      message='You have unsaved changes, are you sure you want to leave?'
+    />
+    {/* Component JSX */}
+  </React.Fragment>
+)
+
 
 class Todo extends Component {
 
@@ -27,26 +41,54 @@ class Todo extends Component {
     super(props);   
     this.state = {
       arr: {}
-    };
+    };    
+    this.deleteTask = this.deleteTask.bind(this);
+    this.saveStatus = this.saveStatus.bind(this)
   }
  
   componentDidMount() {
-   // this.props.history.listen(this.onRouteChange.bind(this));
+  //  this.props.history.listen(this.onRouteChange.bind(this));
     this.setState({ taskArr: service.getTaskListByUser(this.props.userId) });
     
   } 
   
-  /* onRouteChange(route) {
-    if(this.state.dirtyInd)
-    {
+  deleteTask(task) {
+    debugger
+    service.deleteTask(task._id, this);
+  }
+
+  /* componentDidUpdate = () => {
+    if (false) {
+      window.onbeforeunload = () => true
+     alert('ddddddddd');
+    } else {
       
     }
   } */
 
+ // onRouteChange(route) {
+  //  alert('sss');
+  //  window.onbeforeunload = () => true
+ // } 
+
+ saveStatus(task)
+ {
+   debugger
+  let statusNum = task.status + 1;
+  if (statusNum > 4)
+  {
+    statusNum = 1;
+  }
+   let obj = {};
+   obj.status = statusNum;
+   obj._id=task._id;
+   service.updateStatus(obj, this); 
+ }
+
   renderTask(task) {    
     return (
       <div>
-        <Task value={task}/>
+        <Task deleteTask={()=>this.deleteTask(task)} value={task} saveStatus={()=>this.saveStatus(task)}/>
       </div>
     );
   }
@@ -63,4 +105,4 @@ class Todo extends Component {
     }
   }
 
-export default Todo;
+export default withRouter(Todo);

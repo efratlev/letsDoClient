@@ -31,7 +31,7 @@ class ServiceLocator extends Component {
 
     sendMail(url, method, body, callback, callbackerr) {
         debugger
-        axios({ url: 'http://localhost:4001/' + url, method: method, data: body }).then(function (response) {
+        axios({ url: 'https://lets-do-server.herokuapp.com/' + url, method: method, data: body }).then(function (response) {
             callback(response.data); 
         }).catch(function (error) {
             callbackerr(error);

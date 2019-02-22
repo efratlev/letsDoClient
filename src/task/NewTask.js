@@ -1,63 +1,26 @@
 import React, { Component } from 'react';
-import './NewTask.css';
+import './DetailsTask.css';
 import Service from "../service/Service"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-//import DateFnsUtils from '@date-io/date-fns';
-//import Grid from '@material-ui/core/Grid';
+
 
 const service = new Service();
 
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
-
 const priorities = [
   {
-    value: '1',
+    value: 1,
     label: 'high',
   },
   {
-    value: '2',
+    value: 2,
     label: 'medium',
   },
   {
-    value: '3',
+    value: 3,
     label: 'low',
-  },
-];
-
-const contacts = [
-  {
-    value: '1',
-    label: 'Yair',
-  },
-  {
-    value: '2',
-    label: 'Nechama',
-  },
-  {
-    value: '3',
-    label: 'Shira',
   },
 ];
 
@@ -66,12 +29,20 @@ class NewTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      members: [],
       name: '',
       description: '',
       _id: '',
       priority: '',
-      assignedTo: '5c6c53b9cd2522001760837f'//temp- we need to do calculate of user id by user name
+      assignedTo: '',
+      targetDate: '',
+      comments: ''
     }
+  }
+
+  componentDidMount() {
+    debugger
+    service.getUserListByGroup(this);
   }
 
   handleChange = prop => event => {
@@ -85,152 +56,116 @@ class NewTask extends Component {
     obj.taskName = this.state.name;
     obj.description = this.state.description;
     obj.userId = localStorage.getItem('userId');
-    obj.assignedId = localStorage.getItem('userId');//this.state.assignedTo;- need to change temporary value
+    obj.assignedId = this.state.assignedTo;
     obj.priority = this.state.priority;
-    obj.status = 0;
+    obj.comments = this.state.comments;
+    obj.targetDate = this.state.targetDate;
+    obj.status = 1;
     service.createNewTask(obj, this);
   }
 
   render() {
-    return (
-      <div>
-      <Grid className="container" container spacing={24}>
-      <Grid item xs={3}>
-        <Paper className="paper">xs=3</Paper>
-      </Grid>
-      <Grid item xs={3}>
-        <Paper className="paper">xs=3</Paper>
-      </Grid>
-      <Grid item xs={3}>
-        <Paper className="paper">xs=3</Paper>
-      </Grid>
-      <Grid item xs={3}>
-        <Paper className="paper">xs=3</Paper>
-      </Grid>
-      <Grid item xs={8}>
-        <Paper className="paper">xs=8</Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className="paper">xs=4</Paper>
-      </Grid>
-    </Grid>
-      <form className="container" autoComplete="off" >
-        <TextField
-          required
-          id="filled-name"
-          label="Name"
-          className="textField"
-          value={this.state.name}
-          onChange={this.handleChange('name')}
-          margin="normal"
-          variant="filled"
-        />
-        <TextField
-          id="filled-full-width"
-          label="Description"
-          value={this.state.description}
-          helperText="Full width!"
-          fullWidth
-          margin="normal"
-          variant="filled"
-          onChange={this.handleChange('description')}
-        />
-        <TextField
-          id="date"
-          label="Birthday"
-          type="date"
-          defaultValue="2017-05-24"
-          className="textField"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-         
-        <TextField
-          id="filled-number"
-          label="Number"
-          value={this.state.age}
-          onChange={this.handleChange('priority')}
-          type="number"
-          className="textField"
-          margin="normal"
-          variant="filled"
-        />
-        <TextField
-          id="filled-select-currency-native"
-          select
-          label="Native select"
-          className="textField"
-          value={this.state.currency}
-          onChange={this.handleChange('currency')}
-          SelectProps={{
-            native: true,
-            MenuProps: {
-              className: "menu"
-            },
-          }}
-          helperText="Please select your currency"
-          margin="normal"
-          variant="filled"
-        >
-          {currencies.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-        <TextField
-          id="filled-select-currency-native"
-          select
-          label="assigned to"
-          className="textField"
-          value={this.state.currency}
-          onChange={this.handleChange('currency')}
-          SelectProps={{
-            native: true,
-            MenuProps: {
-              className: "menu"
-            },
-          }}
-          helperText="Please select your currency"
-          margin="normal"
-          variant="filled"
-        >
-          {contacts.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-        <TextField
-          id="filled-select-currency-native"
-          select
-          label="priority"
-          className="textField"
-          value={this.state.currency}
-          onChange={this.handleChange('currency')}
-          SelectProps={{
-            native: true,
-            MenuProps: {
-              className: "menu"
-            },
-          }}
-          helperText="Please select your currency"
-          margin="normal"
-          variant="filled"
-        >
-          {priorities.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-        <br />
-        <Button onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
-          create
+    return this.state.members != null && this.state.members.length
+      ? (
+        <Paper className="paper">
+        
+          <form className="container" autoComplete="off" >
+            <h3>Create New Task</h3>
+            <br/>
+            <TextField
+              required
+              id="filled-name"
+              label="Name"
+              className="textField"
+              value={this.state.name}
+              onChange={this.handleChange('name')}
+              margin="normal"
+              variant="filled"
+            />
+            <TextField
+              id="filled-full-width"
+              label="Description"
+              value={this.state.description}
+              fullWidth
+              margin="normal"
+              variant="filled"
+              onChange={this.handleChange('description')}
+            />
+            <TextField
+              id="date"
+              label="Target Date"
+              type="date"
+              defaultValue="2017-05-24"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className="textField"
+              value={this.state.targetDate}
+              onChange={this.handleChange('targetDate')}
+              margin="normal"
+              variant="filled"
+            />
+            <TextField
+              id="filled-select-currency-native"
+              select
+              label="assigned to"
+              className="textField"
+              value={this.state.assignedTo}
+              onChange={this.handleChange('assignedTo')}
+              SelectProps={{
+                native: true,
+                MenuProps: {
+                  className: "menu"
+                },
+              }}
+              margin="normal"
+              variant="filled"
+            >
+              <option key='' value='' />
+              {this.state.members.map(option => (
+                <option key={option._id} value={option._id}>
+                  {option.userName}
+                </option>
+              ))}
+            </TextField>
+            <TextField
+              id="filled-select-currency-native"
+              select
+              label="priority"
+              className="textField"
+              value={this.state.priority}
+              onChange={this.handleChange('priority')}
+              SelectProps={{
+                native: true,
+                MenuProps: {
+                  className: "menu"
+                },
+              }}
+              margin="normal"
+              variant="filled"
+            >
+              <option key='' value='' />
+              {priorities.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+            <TextField
+              id="filled-full-width"
+              label="comments"
+              value={this.state.comments}
+              fullWidth
+              margin="normal"
+              variant="filled"
+              onChange={this.handleChange('comments')}
+            />
+            <br />
+            <Button className="btn" onClick={this.handleSubmit.bind(this)} variant="contained" color="primary" >
+              create
      </Button>
-      </form></div>
-    );
+          </form></Paper>
+      ) : null;
   }
 }
 export default NewTask;

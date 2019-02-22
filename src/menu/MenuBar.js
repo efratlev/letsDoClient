@@ -109,7 +109,7 @@ class MenuBar extends Component {
               <MoreIcon />
            </IconButton> */}
           
-           <Button onClick={() => { this.props.history.push('/Todo') }}
+           <Button onClick={() => { this.props.history.push('/MyGroups') }}
            color="inherit">Home</Button>
            <Button onClick={() => { this.props.history.push('/About') }}
             color="inherit">About</Button>
