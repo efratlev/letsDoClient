@@ -17,11 +17,50 @@ class Service extends Component {
     };
   }
 
-  //oninit react
-  setList(l1) {
-    this.setState = ({
-      list: l1,
-    });
+  inviteNewMember(mailOptions, inviteDetails, self)
+  {
+    let self2=this;
+    serviceLocator.executePost('invitations/invitationByAdmin', 'post', inviteDetails,
+      function (data) {
+        debugger
+        self2.sendEmail(mailOptions, self);
+        console.log('invite a user for my group !!');
+      },
+      function () { console.log('invite a user for my group failed :( ??'); });
+  }
+
+  retrieveMyInvitations(self)
+  {
+     serviceLocator.executePost('invitations', 'post', { userId: localStorage.getItem('userId')},
+      function (data) {
+        debugger
+        self.setState({ invitations: data.invitations });
+        console.log('get invitations !!');
+      },
+      function () { console.log('get invitations failed :( ??'); });
+  }
+
+  approvedInvitation(obj, self)
+  {
+    let self2=this;
+    serviceLocator.executePost('groups/approveConnectToGroup', 'put', obj,
+      function (data) {
+        debugger
+        self2.deleteInvitation(obj, self)       
+        console.log('add to group by invitations !!');
+      },
+      function () { console.log('add to group by invitations failed :( ??'); });
+  }
+
+  deleteInvitation(obj, self)
+  {
+    serviceLocator.executePost('invitations/deleteInvitation', 'post', obj,
+    function (data) {
+      debugger    
+      self.props.history.push('../MyGroups');
+      console.log('delete invitation !!');
+    },
+    function () { console.log('delete invitation failed :( ??'); });
   }
 
   getTaskListByUser(userId) {

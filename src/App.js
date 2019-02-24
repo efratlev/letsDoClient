@@ -22,6 +22,9 @@ import Profile from './login/test/Profile';
 import Sort from './sort/Sort';
 import Member from './login/Member';
 import ToDoList from './todo/ToDoList';
+import Invitation from './invitation/Invitation';
+import InvitationList from './invitation/InvitationList';
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -63,6 +66,8 @@ class App extends Component {
           <Route path="/ToDoPerUser" component={ToDoPerUser} />
           <Route path="/ToDoList" component={ToDoList} />
           <Route path="/Profile" component={Profile} />
+          <Route path="/Invitation" component={Invitation} />
+          <Route path="/InvitationList" component={InvitationList} />
         </main>
       </Router>
         {/* Footer */}

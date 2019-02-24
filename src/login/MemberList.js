@@ -55,7 +55,13 @@ class MemberList extends Component {
     mailOptions.to=this.state.email;
     mailOptions.from=localStorage.getItem('userName');
     mailOptions.groupName=localStorage.getItem('groupName');
-    service.sendEmail(mailOptions, this);  
+    let inviteDetails={};
+    inviteDetails.userId=localStorage.getItem('userId');
+    inviteDetails.auth='5c6ea9761583090c5c4ba591';//localStorage.getItem('userId');
+    inviteDetails.groupId=localStorage.getItem('currentGroup');
+    inviteDetails.newUser='5c71db4db390040017cbf816';//=this.state.email;//name
+    service.inviteNewMember(mailOptions, inviteDetails, this);
+    //service.sendEmail(mailOptions, this);  
     this.setState({ email:''})
   }  
   
