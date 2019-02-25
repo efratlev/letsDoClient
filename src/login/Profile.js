@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import Chart from 'chart.js';
 
 
 class Profile extends Component {
@@ -24,7 +25,10 @@ class Profile extends Component {
   
   render (){
       return(
-       <div>---</div>
+
+       <div>
+          <canvas id="myChart" width="400" height="400"></canvas>
+       </div>
     );
   }
 }

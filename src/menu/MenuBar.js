@@ -96,21 +96,10 @@ class MenuBar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Let's Do
             </Typography> 
-          {/*   <IconButton color="inherit" aria-label="Open drawer">
-            <MenuIcon />
-          </IconButton>
-           <IconButton color="inherit">
-            <AddIcon />
-          </IconButton>
-          <IconButton color="inherit">
-             <SearchIcon />
-           </IconButton>
-           <IconButton color="inherit">
-              <MoreIcon />
-           </IconButton> */}
-          
-           <Button onClick={() => { this.props.history.push('/MyGroups') }}
+            <Button onClick={() => { this.props.history.push('/MyGroups') }}
            color="inherit">Home</Button>
+            <Button onClick={() => { this.props.history.push('/MyTasks') }}
+           color="inherit">My Tasks</Button>         
            <Button onClick={() => { this.props.history.push('/About') }}
             color="inherit">About</Button>
            <Button onClick={() => { this.props.history.push('/Login') }}

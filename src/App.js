@@ -6,6 +6,7 @@ import Home from './Home';
 import About from './About';
 import Menu from './menu/MenuBar';
 import Todo from './todo/Todo';
+import MyTasks from './todo/MyTasks';
 import NewTask from './task/NewTask';
 import EditTask from './editTask/EditTask';
 import ViewTask from './task/ViewTask';
@@ -18,7 +19,7 @@ import Album from './todo/Album';
 import ToDoPerUser from './todo/ToDoPerUser';
 import Login from './login/Login';
 import ResetPassword from './login/ResetPassword';
-import Profile from './login/test/Profile';
+import Profile from './login/Profile';
 import Sort from './sort/Sort';
 import Member from './login/Member';
 import ToDoList from './todo/ToDoList';
@@ -53,6 +54,7 @@ class App extends Component {
           <Route path="/NewTask" component={NewTask} />
           <Route path="/Home" component={Home} />
           <Route path="/Todo" component={Todo}  />
+          <Route path="/MyTasks" component={MyTasks}  />
           <Route path="/Album" component={Album}  />
           <Route path="/About" component={About} />
           <Route path="/SignUp" component={SignUp} />

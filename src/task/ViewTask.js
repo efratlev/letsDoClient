@@ -138,7 +138,7 @@ class ViewTask extends Component {
           <TextField
             id="filled-select-currency-native"
             select
-            label="assigned to"
+            label="Assigned To"
             className="textField"
             value={this.state.assignedTo}
             onChange={this.handleChange('assignedTo')}
@@ -161,7 +161,7 @@ class ViewTask extends Component {
           <TextField
             id="filled-select-currency-native"
             select
-            label="priority"
+            label="Priority"
             className="textField"
             value={this.state.priority}
             onChange={this.handleChange('priority')}
@@ -183,7 +183,7 @@ class ViewTask extends Component {
           </TextField>
           <TextField
             id="filled-full-width"
-            label="comments"
+            label="Comments"
             value={this.state.comments}
             fullWidth
             margin="normal"
