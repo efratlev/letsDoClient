@@ -25,6 +25,7 @@ import Member from './login/Member';
 import ToDoList from './todo/ToDoList';
 import Invitation from './invitation/Invitation';
 import InvitationList from './invitation/InvitationList';
+import Chart from './chart/Chart';
 
 class App extends Component {
   constructor(props){
@@ -70,6 +71,8 @@ class App extends Component {
           <Route path="/Profile" component={Profile} />
           <Route path="/Invitation" component={Invitation} />
           <Route path="/InvitationList" component={InvitationList} />
+          <Route path="/Chart" component={Chart} />
+
         </main>
       </Router>
         {/* Footer */}

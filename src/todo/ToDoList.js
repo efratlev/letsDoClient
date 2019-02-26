@@ -170,7 +170,7 @@ class ToDoList extends Component {
             <Tab label="My Tasks" />
           </Tabs>
         </AppBar>
-        <TextField   style={{left: '40px'}}
+      {/*   <TextField   style={{left: '40px'}}
               id="filled-select-currency-native"
               select
               label="filter by"
@@ -191,7 +191,7 @@ class ToDoList extends Component {
                   {option.label}
                 </option>
               ))}
-            </TextField>
+            </TextField> */}
         {value === 0 && <TabContainer><ToDoPerUser></ToDoPerUser></TabContainer>}
         {value === 1 && <TabContainer><Todo></Todo></TabContainer>}
         <Button variant="contained" color="primary" style={{ marginLeft: '50px' }} onClick={this.createNewTask.bind(this)}>

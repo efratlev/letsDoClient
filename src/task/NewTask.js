@@ -12,15 +12,15 @@ const service = new Service();
 const priorities = [
   {
     value: 1,
-    label: 'high',
+    label: 'Low',
   },
   {
     value: 2,
-    label: 'medium',
+    label: 'Medium',
   },
   {
     value: 3,
-    label: 'low',
+    label: 'High',
   },
 ];
 
@@ -108,7 +108,7 @@ class NewTask extends Component {
             <TextField
               id="filled-select-currency-native"
               select
-              label="assigned to"
+              label="Assigned To"
               className="textField"
               value={this.state.assignedTo}
               onChange={this.handleChange('assignedTo')}
@@ -131,7 +131,7 @@ class NewTask extends Component {
             <TextField
               id="filled-select-currency-native"
               select
-              label="priority"
+              label="Priority"
               className="textField"
               value={this.state.priority}
               onChange={this.handleChange('priority')}
@@ -153,7 +153,7 @@ class NewTask extends Component {
             </TextField>
             <TextField
               id="filled-full-width"
-              label="comments"
+              label="Comments"
               value={this.state.comments}
               fullWidth
               margin="normal"

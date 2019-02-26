@@ -1,4 +1,4 @@
- import React, { Component } from 'react';
+import React, { Component } from 'react';
 import './Menu.css';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,6 +15,8 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
 import { withRouter } from 'react-router';
 
 
@@ -28,6 +30,7 @@ const styles = {
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
+    color: 'white',
   },
 };
 
@@ -37,7 +40,13 @@ class MenuBar extends Component {
     auth2: true,
     anchorEl: null,
     anchorE2: null,
+    invitationsNum:''
   };
+
+  componentDidMount()
+  {
+    this.setState({invitationsNum:localStorage.getItem('invitationsNum')});
+  }
 
   handleChange = event => {
     this.setState({ auth: event.target.checked });
@@ -58,6 +67,18 @@ class MenuBar extends Component {
   handleCloseBar = () => {
     this.setState({ anchorE2: null });
   }
+  
+  goTo(path, self)
+  {
+    self.props.history.push(path);
+  }
+
+  logOut()
+  {
+    localStorage.setItem('userId', '');
+    this.props.history.push('/Login');
+
+  }
 
   render() {
     const { classes } = this.props;
@@ -72,41 +93,46 @@ class MenuBar extends Component {
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon
-              aria-owns={open ? 'menu-appbar' : undefined}
-              aria-haspopup="true"
-              onClick={this.handleMenuBar} />
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenuBar} />
               <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorE2}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open2}
-                  onClose={this.handleCloseBar}
-                >
-                  <MenuItem onClick={this.handleCloseBar}><Link to="/SignIn">log in</Link></MenuItem>
-                  <MenuItem onClick={this.handleCloseBar}><Link to="/ToDo">to do</Link></MenuItem>
-                </Menu>
+                id="menu-appbar"
+                anchorEl={anchorE2}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open2}
+                onClose={this.handleCloseBar}
+              >
+                <MenuItem onClick={this.logOut.bind(this)}>Log Out</MenuItem>
+                <MenuItem onClick={()=>this.goTo('/NewGroup', this)}>New Group</MenuItem>
+              </Menu>
+            </IconButton>
+            <IconButton aria-label="4 pending messages" className={classes.menuButton} onClick={()=>this.goTo('/InvitationList', this)}>
+              <Badge badgeContent={this.state.invitationsNum} color="secondary">
+                <MailIcon />
+              </Badge>
             </IconButton>
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Let's Do
-            </Typography> 
+            </Typography>
             <Button onClick={() => { this.props.history.push('/MyGroups') }}
-           color="inherit">Home</Button>
+              color="inherit">Home</Button>
             <Button onClick={() => { this.props.history.push('/MyTasks') }}
-           color="inherit">My Tasks</Button>         
-           <Button onClick={() => { this.props.history.push('/About') }}
-            color="inherit">About</Button>
-           <Button onClick={() => { this.props.history.push('/Login') }}
-           color="inherit">Log in</Button>
-           <Button color="inherit" onClick={() => { this.props.history.push('/SignUp') }}
-           >Sign up</Button>
-                   
+              color="inherit">My Tasks</Button>
+            <Button onClick={() => { this.props.history.push('/About') }}
+              color="inherit">About</Button>
+            <Button onClick={() => { this.props.history.push('/Login') }}
+              color="inherit">Log in</Button>
+            <Button color="inherit" onClick={() => { this.props.history.push('/SignUp') }}
+            >Sign up</Button>
+
             {auth && (
               <div>
                 <IconButton
@@ -131,7 +157,7 @@ class MenuBar extends Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}><Link to="/Profile">Profile</Link></MenuItem>
+                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                   <MenuItem onClick={this.handleClose}>My account</MenuItem>
                 </Menu>
               </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ServiceLocator from './ServiceLocator';
-import Task from '../task/Task';
+import MenuBar from '../menu/MenuBar';
 
 const serviceLocator = new ServiceLocator();
 
@@ -33,6 +33,23 @@ class Service extends Component {
       function (data) {
         debugger
         self.setState({ invitations: data.invitations });
+        console.log('get invitations !!');
+      },
+      function () { console.log('get invitations failed :( ??'); });
+  }
+
+  checkInvitations() {
+    serviceLocator.executePost('invitations', 'post', { userId: localStorage.getItem('userId') },
+      function (data) {
+          if(data.invitations.length>0)
+          {
+            localStorage.setItem('invitationsNum', data.invitations.length);
+            MenuBar.componentDidMount();
+          }
+          else
+          {
+            localStorage.setItem('invitationsNum', 0);
+          }
         console.log('get invitations !!');
       },
       function () { console.log('get invitations failed :( ??'); });
@@ -116,12 +133,13 @@ getUserById(id) {
 }
 
 signIn(obj, self) {
-  debugger
+  let self2=this;
   serviceLocator.executePost('login', 'post', obj,
     function (data) {
       localStorage.setItem('userId', data._id);
       localStorage.setItem('userName', data.userName);
-      console.log('login !!!!!!!!!!!');
+      console.log('login');
+      self2.checkInvitations();
       self.props.history.push('../MyGroups');
     },
     function () { console.log('login failed :('); })
@@ -132,7 +150,7 @@ createGroup(obj, self) {
   debugger
   serviceLocator.executePost('groups/newGroup', 'post', obj,
     function () {
-      console.log('new group !!!!!!!!!!!');
+      console.log('new group');
       self.props.history.push('../MyGroups');
     },
     function () { console.log('failed to create new group :( ???????????????????'); });

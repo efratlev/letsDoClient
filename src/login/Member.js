@@ -12,7 +12,7 @@ class Member extends Component {
       return(
         <ListItem alignItems="flex-start" id={this.props.id}>
           <ListItemAvatar>
-            <Avatar alt="groupLogo" /* src={ require('../images/'+this.props.id+'.jpg') } */ />
+            <Avatar alt="groupLogo"  src={ require('../images/'+this.props.img+'.jpg') } />
           </ListItemAvatar>
           <ListItemText
             primary={ this.props.username }         
