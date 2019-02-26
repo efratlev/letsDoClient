@@ -18,9 +18,8 @@ class Firebase {
                 messaging.requestPermission().then(function () {
                     console.log('Notification permission granted.');
                     messaging.getToken().then(function (currentToken) {
-
                         if (currentToken) {
-                            console.log('jgdshuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+                            console.log('GOT TOKEN -- GOT TOKEN -- GOT TOKEN -- GOT TOKEN -- GOT TOKEN');
                             console.log(currentToken);
                         } else {
                             // Show permission request.
@@ -31,8 +30,30 @@ class Firebase {
 
                         console.log('An error occurred while retrieving token. ', err);
                     });
+                    messaging.onTokenRefresh(function() {
+                        messaging.getToken().then(function(refreshedToken) {
+                            console.log('Token refreshed.');
+                            console.log('GOT TOKEN -- GOT TOKEN -- GOT TOKEN -- GOT TOKEN -- GOT TOKEN');
+                            console.log(refreshedToken);
+                        }).catch(function(err) {
+                            console.log('Unable to retrieve refreshed token ', err);
+                        });
+                    });
                 }).catch(function (err) {
                     console.log('Unable to get permission to notify.', err);
+                });
+                //when chrome is open
+                messaging.onMessage(function(payload) {
+                    console.log('Message received. ', payload);
+                    console.log('[src/Firebase/Firebase.js] Received message ', payload);
+                    const notificationTitle = payload.notification.title;
+                    const notificationOptions = {
+                        body: payload.notification.body,
+                        icon: payload.notification.icon
+                    };
+                    // Let's check whether notification permissions have already been granted
+                    // If it's okay let's create a notification
+                    var notification = new Notification(notificationTitle, notificationOptions);
                 });
             });
     }

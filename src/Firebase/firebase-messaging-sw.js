@@ -9,6 +9,7 @@ var config = {
     messagingSenderId: "349980724264"
 };
 firebase.initializeApp(config);
+//when chrome is close
 firebase.messaging().setBackgroundMessageHandler(function (payload) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     const notificationTitle = payload.notification.title;
