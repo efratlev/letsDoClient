@@ -12,7 +12,8 @@
     margin-Top:80px;
     flex-Direction: 'column';
     align-Items: 'center';
-   padding: 20px;
+    padding: 20px;
+    min-width: 350px;
   }
   .avatar {
     background-color: #ef27d6;

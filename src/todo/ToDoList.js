@@ -18,7 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import Loading from '../components/Loading';
 
 const service = new Service();
 
@@ -198,7 +198,7 @@ class ToDoList extends Component {
           new
       </Button>
       </div>
-    ):'loading...';
+    ):<Loading></Loading>
   }
 }
 

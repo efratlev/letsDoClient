@@ -10,16 +10,16 @@ import moment from 'moment'
 
 const priorities = [
   {
-    value: '1',
-    label: 'high',
+    value: 1,
+    label: 'Low',
   },
   {
-    value: '2',
-    label: 'medium',
+    value: 2,
+    label: 'Medium',
   },
   {
-    value: '3',
-    label: 'low',
+    value: 3,
+    label: 'High',
   },
 ];
 

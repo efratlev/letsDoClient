@@ -18,11 +18,10 @@ class Chart extends Component {
 				startAngle: -90,
 				dataPoints: [
 					/* { y: 0, label: "Yael" }, */
-					{ y: 24, label: "Roni" },
-					{ y: 20, label: "Natan" },
+					{ y: 44, label: "Tom" },
+					{ y: 34, label: "Jennifer" },
 					/* { y: 0, label: "Hagit" }, */
-					{ y: 12, label: "Dovi" },
-					{ y: 10, label: "Ayala" }	
+					{ y: 22, label: "Eddi" }
 				]
 			}]
 		}

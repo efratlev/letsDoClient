@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Service from '../service/Service'
 import { Route , withRouter} from 'react-router-dom';
+import MailIcon from '@material-ui/icons/Mail';
 
 const service = new Service();
 
@@ -31,7 +32,7 @@ class Invitation extends Component {
       return(
         <ListItem alignItems="flex-start" groupId={this.props.groupId}>
           <ListItemAvatar>
-            <Avatar alt="groupLogo" /* src={ require('../images/'+this.props.id+'.jpg') } */ />
+          <MailIcon />
           </ListItemAvatar>
           <ListItemText
             primary= {this.state.test+this.props.groupName }

@@ -86,7 +86,7 @@ class MemberList extends Component {
     return (
       <div>
         <ListItem button >
-          <Member username={member.userName} id={member._id} img={member.img?member.img[0]:'avatar'}></Member>
+          <Member username={member.userName} id={member._id} img={member.img?member.img:'avatar'}></Member>
           <TextField style={{ width: '200px' }}
             id="filled-select-authoration-native"
             select

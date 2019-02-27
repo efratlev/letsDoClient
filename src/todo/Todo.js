@@ -101,7 +101,7 @@ class Todo extends Component {
           this.renderTask(item))
         }
       </List >     
-      ):'Loading...';
+      ):null;
     }
   }
 

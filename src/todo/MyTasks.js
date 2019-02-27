@@ -7,6 +7,7 @@ import Service from '../service/Service';
 
 
 import { Prompt } from 'react-router'
+import Loading from '../components/Loading';
 const service = new Service();
 const MyComponent = () => (
   <React.Fragment>
@@ -70,7 +71,7 @@ class MyTasks extends Component {
           this.renderTask(item))
         }
       </List >     
-      ):'Loading...';
+      ):<Loading></Loading>;
     }
   }
 
